@@ -7,7 +7,7 @@ on:
     types: [closed]
 
 env:
-  AWS_REGION: ap-northeast-1
+  AWS_REGION: us-east-1
   ECS_WEBAPP_SERVICE: ecs-sample-webapp
   ECS_RESTAPI_SERVICE: ecs-sample-restapi
   WEBAPP_CONTAINER_NAME: ecs-sample-webapp
