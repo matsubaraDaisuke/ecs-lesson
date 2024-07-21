@@ -17,6 +17,7 @@ env:
   BACKEND_TAG: 1.0.0
   RESTAPI_TAG: 1.0.0
   #SLACK_WEBHOOK: https://xxxxxxxx ##change this URL!!
+  $REGISTRY: ${{ secrets.ECR_REGISTRY }}
 
 jobs:
   deploy:
@@ -42,35 +43,35 @@ jobs:
       - name: webapp push to ECR
         id: build-image-webapp
         env:
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }} #${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           cd sample-webapp
-          docker build -t $ECR_REGISTRY/$WEBAPP_CONTAINER_NAME:$WEBAPP_TAG .
-          docker tag $ECR_REGISTRY/$WEBAPP_CONTAINER_NAME:$WEBAPP_TAG $ECR_REGISTRY/$WEBAPP_CONTAINER_NAME:latest
-          docker push $ECR_REGISTRY/$WEBAPP_CONTAINER_NAME:$WEBAPP_TAG
-          docker push $ECR_REGISTRY/$WEBAPP_CONTAINER_NAME:latest
+          docker build -t $REGISTRY/$WEBAPP_CONTAINER_NAME:$WEBAPP_TAG .
+          docker tag $REGISTRY/$WEBAPP_CONTAINER_NAME:$WEBAPP_TAG $ECR_REGISTRY/$WEBAPP_CONTAINER_NAME:latest
+          docker push $REGISTRY/$WEBAPP_CONTAINER_NAME:$WEBAPP_TAG
+          docker push $REGISTRY/$WEBAPP_CONTAINER_NAME:latest
 
       - name: backend push to ECR
         id: build-image-backend
         env:
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }} #${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           cd sample-backend
-          docker build -t $ECR_REGISTRY/$BACKEND_CONTAINER_NAME:$BACKEND_TAG .
-          docker tag $ECR_REGISTRY/$BACKEND_CONTAINER_NAME:$BACKEND_TAG $ECR_REGISTRY/$BACKEND_CONTAINER_NAME:latest
-          docker push $ECR_REGISTRY/$BACKEND_CONTAINER_NAME:$BACKEND_TAG
-          docker push $ECR_REGISTRY/$BACKEND_CONTAINER_NAME:latest
+          docker build -t $REGISTRY/$BACKEND_CONTAINER_NAME:$BACKEND_TAG .
+          docker tag $REGISTRY/$BACKEND_CONTAINER_NAME:$BACKEND_TAG $ECR_REGISTRY/$BACKEND_CONTAINER_NAME:latest
+          docker push $REGISTRY/$BACKEND_CONTAINER_NAME:$BACKEND_TAG
+          docker push $REGISTRY/$BACKEND_CONTAINER_NAME:latest
 
       - name: restapi push to ECR
         id: build-image-restapi
         env:
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }} #${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           cd sample-restapi
-          docker build -t $ECR_REGISTRY/$RESTAPI_CONTAINER_NAME:$RESTAPI_TAG .
-          docker tag $ECR_REGISTRY/$RESTAPI_CONTAINER_NAME:$RESTAPI_TAG $ECR_REGISTRY/$RESTAPI_CONTAINER_NAME:latest
-          docker push $ECR_REGISTRY/$RESTAPI_CONTAINER_NAME:$RESTAPI_TAG
-          docker push $ECR_REGISTRY/$RESTAPI_CONTAINER_NAME:latest
+          docker build -t $REGISTRY/$RESTAPI_CONTAINER_NAME:$RESTAPI_TAG .
+          docker tag $REGISTRY/$RESTAPI_CONTAINER_NAME:$RESTAPI_TAG $ECR_REGISTRY/$RESTAPI_CONTAINER_NAME:latest
+          docker push $REGISTRY/$RESTAPI_CONTAINER_NAME:$RESTAPI_TAG
+          docker push $REGISTRY/$RESTAPI_CONTAINER_NAME:latest
 
       - name: Deploy to ECS
         run: |
