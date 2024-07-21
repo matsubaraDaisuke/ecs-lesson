@@ -42,7 +42,7 @@ jobs:
       - name: webapp push to ECR
         id: build-image-webapp
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }} #${{ steps.login-ecr.outputs.registry }}
         run: |
           cd sample-webapp
           docker build -t $ECR_REGISTRY/$WEBAPP_CONTAINER_NAME:$WEBAPP_TAG .
@@ -53,7 +53,7 @@ jobs:
       - name: backend push to ECR
         id: build-image-backend
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }} #${{ steps.login-ecr.outputs.registry }}
         run: |
           cd sample-backend
           docker build -t $ECR_REGISTRY/$BACKEND_CONTAINER_NAME:$BACKEND_TAG .
@@ -64,7 +64,7 @@ jobs:
       - name: restapi push to ECR
         id: build-image-restapi
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }} #${{ steps.login-ecr.outputs.registry }}
         run: |
           cd sample-restapi
           docker build -t $ECR_REGISTRY/$RESTAPI_CONTAINER_NAME:$RESTAPI_TAG .
